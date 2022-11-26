@@ -34,28 +34,50 @@ const isInt = (str) => {
     }
   };
 
+
 // producer
 function getNumberFromConsole() {
-    const promise = new Promise((resolve, reject) => {
-      rl.question("Please enter a number between 1 and 15: ", (num) => {
-        rl.pause();
-        if (isInt(num)) {
-          num = Number.parseInt(num);
-          resolve(num);
-        } else {
-          reject("To proceed with your request, you must enter a number between 1 and 15.");
-        }
-      });
+  const promise = new Promise((resolve, reject) => {
+    rl.question("Introduce un número entre 1 y 15;\n\ (pulsa 0 para salir): ", (num) => {
+      rl.pause();
+      if (isInt(num)) {
+        num = Number.parseInt(num);
+        resolve(num);
+      } else {
+        reject("Debe introducir un número entre 1 y 15!");
+      }
     });
-  
-    return promise;
-  }
+  });
+
+  return promise;
+}
 
 
 
 //displayinConsole function based on the discription detailed in challenge.md
 async function displayInConsole() {
     let numberFromConsole;
+
+    console.log("### 1- Mostrar en formato de tabla todos los alumnos.\n\
+    ### 2- Mostrar por consola la cantidad de alumnos que hay en clase.\n\
+    ### 3- Mostrar por consola todos los nombres de los alumnos.\n\
+    ### 4- Eliminar el último alumno de la clase.\n\
+    ### 5- Eliminar un alumno aleatoriamente de la clase.\n\
+    ### 6- Mostrar por consola todos los datos de los alumnos que son chicas.\n\
+    ### 7- Mostrar por consola el número de chicos y chicas que hay en la clase.\n\
+    ### 8- Mostrar true o false por consola si todos los alumnos de la clase son chicas.\n\
+    ### 9- Mostrar por consola los nombres de los alumnos que tengan entre 20 y 25 años.\n\
+    ### 10- Añadir un alumno nuevo con los siguientes datos:\n\
+    - nombre aleatorio.\n\
+    - edad aleatoria entre 20 y 50 años.\n\
+    - género aleatorio.\n\
+    - listado de calificaciones vacío.\n\
+    ### 11- Mostrar por consola el nombre de la persona más joven de la clase.\n\
+    ¡OJO!, si varias personas de la clase comparten la edad más baja, cualquiera de ellos es una respuesta válida.\n\
+    ### 12- Mostrar por consola la edad media de todos los alumnos de la clase.\n\
+    ### 13- Mostrar por consola la edad media de las chicas de la clase.\n\
+    ### 14- Añadir nueva nota a los alumnos. Por cada alumno de la clase, tendremos que calcular una nota de forma aleatoria(número entre 0 y 10) y añadirla a su listado de notas.\n\
+    ### 15- Ordenar el array de alumnos alfabéticamente según su nombre."); 
 
     do {
         try {
@@ -100,8 +122,8 @@ async function displayInConsole() {
             case 7:
                 const maleStudents = students.filter(student => student.gender === 'male');
                 const females = students.filter(student => student.gender === 'female');
-                console.log(maleStudents.length);
-                console.log(females.length);         
+                console.log("alumnos: " + (maleStudents.length));
+                console.log("alumnas: " + (females.length));  
                 break;
           //### 8- Mostrar true o false por consola si todos los alumnos de la clase son chicas.
             case 8:
@@ -109,7 +131,7 @@ async function displayInConsole() {
                   const isFemale = student => student.gender === 'female';
                   console.log(students.every(isFemale));
                 } else {
-                  console.log("There's no student in the class")
+                  console.log("No hay alumnos")
                 }
                 break;
           //### 9- Mostrar por consola los nombres de los alumnos que tengan entre 20 y 25 años.
@@ -128,7 +150,7 @@ async function displayInConsole() {
                   return Math.floor(Math.random() * (max - min + 1) + min)
                 };
 
-                let randomAge = randomInterval(20, 25);
+                let randomAge = randomInterval(20, 50);
                 
                 students.push({age: randomAge, examScores: [], gender: randomGender, name: randomName});
                 console.table(students);
@@ -148,7 +170,7 @@ async function displayInConsole() {
                   } if (students.length > 0) {
                     console.log(total/students.length)
                   } else {
-                    console.log("There's no student in the class")
+                    console.log("No hay alumnos")
                   }
           
                 break;
