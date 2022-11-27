@@ -87,6 +87,10 @@ async function displayInConsole() {
             process.exit(0)
         }
 
+        const femaleStudents = students.filter(student => student.gender === 'female');
+        const maleStudents = students.filter(student => student.gender === 'male');
+        const isFemale = student => student.gender === 'female';
+
         switch(numberFromConsole) {
           //### 1- Mostrar en formato de tabla todos los alumnos.
             case 1:
@@ -115,20 +119,20 @@ async function displayInConsole() {
                 break;
           //### 6- Mostrar por consola todos los datos de los alumnos que son chicas.
             case 6:
-                const femaleStudents = students.filter(student => student.gender === 'female');
-                console.table(femaleStudents);
+                if (femaleStudents.length > 0) {
+                  console.table(femaleStudents);
+                } else {
+                  console.log("No hay chicas en la clase")
+                }
                 break;
           //### 7- Mostrar por consola el número de chicos y chicas que hay en la clase.
             case 7:
-                const maleStudents = students.filter(student => student.gender === 'male');
-                const females = students.filter(student => student.gender === 'female');
                 console.log("alumnos: " + (maleStudents.length));
-                console.log("alumnas: " + (females.length));  
+                console.log("alumnas: " + (femaleStudents.length));  
                 break;
           //### 8- Mostrar true o false por consola si todos los alumnos de la clase son chicas.
             case 8:
                 if (students.length > 0) {
-                  const isFemale = student => student.gender === 'female';
                   console.log(students.every(isFemale));
                 } else {
                   console.log("No hay alumnos")
@@ -137,9 +141,13 @@ async function displayInConsole() {
           //### 9- Mostrar por consola los nombres de los alumnos que tengan entre 20 y 25 años.
             case 9:        
                 const studentsBetween20and25 = students.filter(student => student.age >= 20 && student.age <= 25)
-                for (let student in studentsBetween20and25) {
-                console.log(studentsBetween20and25[student].name)
-                };
+                if (studentsBetween20and25.length > 0) {
+                  for (let student in studentsBetween20and25) {
+                    console.log(studentsBetween20and25[student].name)
+                  };
+                } else {
+                  console.log("N/A (No hay alumnos entre que tengan entre 20 y 25 años")
+                }
                 break;
           //### 10- Añadir un alumno nuevo con los siguientes datos:
             case 10:
@@ -172,37 +180,39 @@ async function displayInConsole() {
                   } else {
                     console.log("No hay alumnos")
                   }
-          
                 break;
             //### 13- Mostrar por consola la edad media de las chicas de la clase.
             case 13:
-                let femaleTotal = 0;
-                let counter = 0;
+              let counter = 0;
+              let femaleAge = 0;
+              if (femaleStudents.length > 0) {
                   for (let student in students) {
                       if (students[student].gender === 'female') {
-                          counter += 1;
-                          femaleTotal += students[student].age;
-                      } 
-                  }
-                  console.log(femaleTotal/counter)
-                break;
+                          femaleAge += students[student].age;
+                      }
+                  } console.log(femaleAge/femaleStudents.length);
+              } else {
+                console.log("N/A (No hay chicas en la clase)")
+              }
+              break;
             //## 14- Añadir nueva nota a los alumnos. Por cada alumno de la clase, tendremos que calcular una nota de forma aleatoria(número entre 0 y 10) y añadirla a su listado de notas.
             case 14:
                 for (let student in students) {
                   let randomScore = Math.floor(Math.random() * 11);
-                  students[student]["examScores"] = randomScore;
+                  students[student]["examScores"].push(randomScore);
                 };
                 console.table(students)
                 break;
             //### 15- Ordenar el array de alumnos alfabéticamente según su nombre.
             case 15:
-                console.log(students.sort((a, b) => a.name.localeCompare(b.name)));
+                students.sort((a, b) => a.name.localeCompare(b.name));
+                console.table(students)
                 break;
             default:
                 process.exit(0);
             }
         
-    } while (numberFromConsole <= 15 && numberFromConsole >= 0);
+    } while (numberFromConsole <= 15 && numberFromConsole > 0);
 }
  
 
